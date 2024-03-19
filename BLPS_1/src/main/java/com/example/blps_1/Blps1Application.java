@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Blps1Application {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(Blps1Application.class, args);
 	}
 

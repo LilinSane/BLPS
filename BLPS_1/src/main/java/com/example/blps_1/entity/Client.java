@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -19,4 +22,16 @@ public class Client {
     private String name;
     private String login;
     private String password;
+
+    @ManyToMany
+    @JoinTable(name = "notifications",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> notifications = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "cart",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> cart = new ArrayList<>();
 }
