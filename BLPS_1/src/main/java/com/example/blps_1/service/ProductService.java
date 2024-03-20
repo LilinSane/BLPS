@@ -34,6 +34,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    //Добавление продуктов на склад
     public Product addAmount(ProductDTO productDTO){
         Product product = readByName(productDTO);
         product.setAmount(product.getAmount() + productDTO.getAmount());
