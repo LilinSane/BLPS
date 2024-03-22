@@ -6,6 +6,8 @@ import com.example.blps_1.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CategoryService {
@@ -17,6 +19,18 @@ public class CategoryService {
                 .name(categoryDTO.getName())
                 .build();
         return categoryRepository.save(category);
+    }
+
+    public void update(Category category) {
+        categoryRepository.save(category);
+    }
+
+    public List<Category> readAll() {
+        return categoryRepository.findAll();
+    }
+
+    public void delete (Long id) {
+        categoryRepository.delete(readById(id));
     }
 
     public Category readById(Long id){

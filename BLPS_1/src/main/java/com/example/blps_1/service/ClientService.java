@@ -33,6 +33,14 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    public void delete (Long id) {
+        clientRepository.delete(readById(id));
+    }
+
+    public List<Client> readAll() {
+        return clientRepository.findAll();
+    }
+
     public List<Client> readAllByProductId(ProductDTO productDTO){
         Product product = productService.readByName(productDTO);
         return clientRepository.findByCartId(product.getId());
