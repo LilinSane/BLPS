@@ -28,7 +28,6 @@ public class ClientController {
 
     @PostMapping("/cart")
     public ResponseEntity<Product> add(@RequestParam Long clientId, @RequestBody ProductDTO productDTO){
-        //Проверка наличия запрашиваемого количества продкутов на складе
         if(productDTO.getAmount() > productService.readByName(productDTO).getAmount()) {
             notificationService.setNotificationStatus(clientId, productDTO);
             return new ResponseEntity<>(null, HttpStatus.OK);
