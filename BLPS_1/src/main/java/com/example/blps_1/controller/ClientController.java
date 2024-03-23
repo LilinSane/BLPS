@@ -7,6 +7,8 @@ import com.example.blps_1.entity.Product;
 import com.example.blps_1.service.ClientService;
 import com.example.blps_1.service.NotificationService;
 import com.example.blps_1.service.ProductService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,13 @@ public class ClientController {
     private final NotificationService notificationService;
 
     @PostMapping
-    public ResponseEntity<Client> add(@RequestBody ClientDTO clientDTO){
+    public ResponseEntity<Client> add(@Valid @NotNull @RequestBody ClientDTO clientDTO) {
         return new ResponseEntity<>(clientService.create(clientDTO), HttpStatus.OK);
+
     }
 
     @PostMapping("/cart")
-    public ResponseEntity<Product> add(@RequestParam Long clientId, @RequestBody ProductDTO productDTO){
+    public ResponseEntity<Product> add(@Valid @NotNull @RequestParam Long clientId, @RequestBody ProductDTO productDTO){
         if(productDTO.getAmount() > productService.readByName(productDTO).getAmount()) {
             notificationService.setNotificationStatus(clientId, productDTO);
             return new ResponseEntity<>(null, HttpStatus.OK);

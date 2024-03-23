@@ -27,7 +27,7 @@ public class ProductService {
     }
 
     public Product readByName(ProductDTO productDTO){
-        return productRepository.findByName(productDTO.getName());
+        return productRepository.findByName(productDTO.getName()).orElseThrow(() -> new NullPointerException("Товара с таким именем не существует"));
     }
 
     public Product update(Product product) {
