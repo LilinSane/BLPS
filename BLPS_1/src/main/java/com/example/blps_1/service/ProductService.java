@@ -1,6 +1,8 @@
 package com.example.blps_1.service;
 
+import com.example.blps_1.dto.CategoryDTO;
 import com.example.blps_1.dto.ProductDTO;
+import com.example.blps_1.entity.Category;
 import com.example.blps_1.entity.Product;
 import com.example.blps_1.repository.ProductRepository;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,7 @@ public class ProductService {
     private final CategoryService categoryService;
     private final VendorService vendorService;
 
-    public Product create(ProductDTO productDTO){
+    public Product create(ProductDTO productDTO) {
         Product product = Product.builder()
                 .name(productDTO.getName())
                 .amount(productDTO.getAmount())
@@ -26,7 +28,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product readByName(ProductDTO productDTO){
+    public Product readByName(ProductDTO productDTO) {
         return productRepository.findByName(productDTO.getName()).orElseThrow(() -> new NullPointerException("Товара с таким именем не существует"));
     }
 
@@ -38,17 +40,22 @@ public class ProductService {
         productRepository.delete(readById(id));
     }
 
-    public List<Product> readAll(){
+    public List<Product> readAll() {
         return productRepository.findAll();
     }
 
-    public Product addAmount(ProductDTO productDTO){
+    public List<Product> readAllByCategory(CategoryDTO categoryDTO) {
+        Category category = categoryService.readByName(categoryDTO);
+        return productRepository.findProductByCategory(category);
+    }
+
+    public Product addAmount(ProductDTO productDTO) {
         Product product = readByName(productDTO);
         product.setAmount(product.getAmount() + productDTO.getAmount());
         return productRepository.save(product);
     }
 
-    public Product readById(Long id){
+    public Product readById(Long id) {
         return productRepository.findById(id).orElseThrow();
     }
 }

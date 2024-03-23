@@ -21,6 +21,10 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
+    public Category readByName(CategoryDTO categoryDTO) {
+        return categoryRepository.findByName(categoryDTO.getName()).orElseThrow(() -> new NullPointerException("Категории с таким именем не существует"));
+    }
+
     public void update(Category category) {
         categoryRepository.save(category);
     }
