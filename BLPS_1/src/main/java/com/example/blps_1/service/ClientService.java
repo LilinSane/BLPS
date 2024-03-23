@@ -20,7 +20,7 @@ public class ClientService {
     public Client create(ClientDTO clientDTO){
        return clientRepository.save(Client.builder()
                 .name(clientDTO.getName())
-                .login(clientDTO.getLogin())
+                .mail(clientDTO.getMail())
                 .password(clientDTO.getPassword())
                 .build());
     }
@@ -33,9 +33,17 @@ public class ClientService {
         clientRepository.save(client);
     }
 
+    public void delete (Long id) {
+        clientRepository.delete(readById(id));
+    }
+
+    public List<Client> readAll() {
+        return clientRepository.findAll();
+    }
+
     public List<Client> readAllByProductId(ProductDTO productDTO){
         Product product = productService.readByName(productDTO);
-        return clientRepository.findByCartId(product.getId());
+        return clientRepository.findByCartId(product.getId()).orElseThrow(() -> new NullPointerException("Такого айди не существует"));
     }
 
     //Добавление продукта(ов) в корзину

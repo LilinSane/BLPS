@@ -20,7 +20,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    private String login;
+    private String mail;
     private String password;
 
     @ManyToMany

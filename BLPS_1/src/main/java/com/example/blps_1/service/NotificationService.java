@@ -28,7 +28,7 @@ public class NotificationService {
     public void sendNotification(Long clientId, String topic, String body){
         Client client = clientService.readById(clientId);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(client.getLogin());
+        message.setTo(client.getMail());
         message.setSubject(topic);
         message.setText(body);
         javaMailSender.send(message);

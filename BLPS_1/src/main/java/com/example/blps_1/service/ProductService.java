@@ -27,17 +27,28 @@ public class ProductService {
     }
 
     public Product readByName(ProductDTO productDTO){
-        return productRepository.findByName(productDTO.getName());
+        return productRepository.findByName(productDTO.getName()).orElseThrow(() -> new NullPointerException("Товара с таким именем не существует"));
+    }
+
+    public Product update(Product product) {
+        return productRepository.save(product);
+    }
+
+    public void delete(Long id) {
+        productRepository.delete(readById(id));
     }
 
     public List<Product> readAll(){
         return productRepository.findAll();
     }
 
-    //Добавление продуктов на склад
     public Product addAmount(ProductDTO productDTO){
         Product product = readByName(productDTO);
         product.setAmount(product.getAmount() + productDTO.getAmount());
         return productRepository.save(product);
+    }
+
+    public Product readById(Long id){
+        return productRepository.findById(id).orElseThrow();
     }
 }
