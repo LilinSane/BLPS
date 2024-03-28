@@ -17,11 +17,22 @@ public class NotificationService {
     private final JavaMailSender javaMailSender;
 
     //Добавить подписку пользователя на уведомление о прибытии интересующего продукта
-    public void setNotificationStatus(Long clientId, ProductDTO productDTO){
+    public boolean setNotificationStatus(Long clientId, ProductDTO productDTO){
         Client client = clientService.readById(clientId);
         Product product = productService.readByName(productDTO);
+        if(client.getNotifications().contains(product)){return false;}
         client.getNotifications().add(product);
         clientService.update(client);
+        return true;
+    }
+
+    public boolean deleteNotificationStatus(Long clientId, ProductDTO productDTO){
+        Client client = clientService.readById(clientId);
+        Product product = productService.readByName(productDTO);
+        if(client.getNotifications().contains(product)){return false;}
+        client.getNotifications().remove(product);
+        clientService.update(client);
+        return true;
     }
 
     //Отправка письма на почту заданного клиента

@@ -15,27 +15,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/clients")
 @AllArgsConstructor
-public class ClientController {
+public class ClientsController {
 
     private final ClientService clientService;
     private final ProductService productService;
     private final NotificationService notificationService;
 
     @PostMapping
-    public ResponseEntity<Client> add(@Valid @NotNull @RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<Client> create(@RequestBody ClientDTO clientDTO) {
         return new ResponseEntity<>(clientService.create(clientDTO), HttpStatus.OK);
-
     }
 
-    @PostMapping("/cart")
-    public ResponseEntity<Product> add(@Valid @NotNull @RequestParam Long clientId, @RequestBody ProductDTO productDTO){
-        if(productDTO.getAmount() > productService.readByName(productDTO).getAmount()) {
-            notificationService.setNotificationStatus(clientId, productDTO);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+    @GetMapping("/{clientId}")
+    public ResponseEntity<Client> get(@Valid @PathVariable Long clientId) {
+        return new ResponseEntity<>(clientService.readById(clientId), HttpStatus.OK);
+    }
+
+    @PutMapping("{clientId}")
+    public ResponseEntity<Client> update(@Valid @PathVariable Long clientId, @RequestBody ClientDTO clientDTO) {
+        return new ResponseEntity<>(clientService.updateClientData(clientId, clientDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{clientId}")
+    public HttpStatus delete(@Valid @PathVariable Long clientId) {
+        if(!clientService.delete(clientId)){
+            return HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<>(clientService.add(clientId, productDTO), HttpStatus.OK);
+        return HttpStatus.OK;
     }
 
 }
